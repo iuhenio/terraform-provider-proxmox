@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	pxapi "github.com/Telmate/proxmox-api-go/proxmox"
+	pxapi "github.com/iuhenio/proxmox-api-go/proxmox"
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
@@ -482,6 +482,14 @@ func resourceVmQemu() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
+			"ipconfig3": {
+				Type:     schema.TypeString,
+				Optional: true,
+			},
+			"ipconfig4": {
+				Type:     schema.TypeString,
+				Optional: true,
+			},
 			"preprovision": {
 				Type:          schema.TypeBool,
 				Optional:      true,
@@ -554,6 +562,8 @@ func resourceVmQemuCreate(d *schema.ResourceData, meta interface{}) error {
 		Ipconfig0:    d.Get("ipconfig0").(string),
 		Ipconfig1:    d.Get("ipconfig1").(string),
 		Ipconfig2:    d.Get("ipconfig2").(string),
+		Ipconfig3:    d.Get("ipconfig3").(string),
+		Ipconfig4:    d.Get("ipconfig4").(string),
 		// Deprecated single disk config.
 		Storage:  d.Get("storage").(string),
 		DiskSize: d.Get("disk_gb").(float64),
@@ -765,6 +775,8 @@ func resourceVmQemuUpdate(d *schema.ResourceData, meta interface{}) error {
 		Ipconfig0:    d.Get("ipconfig0").(string),
 		Ipconfig1:    d.Get("ipconfig1").(string),
 		Ipconfig2:    d.Get("ipconfig2").(string),
+		Ipconfig3:    d.Get("ipconfig3").(string),
+		Ipconfig4:    d.Get("ipconfig4").(string),
 		// Deprecated single disk config.
 		Storage:  d.Get("storage").(string),
 		DiskSize: d.Get("disk_gb").(float64),
@@ -868,6 +880,8 @@ func resourceVmQemuRead(d *schema.ResourceData, meta interface{}) error {
 	d.Set("ipconfig0", config.Ipconfig0)
 	d.Set("ipconfig1", config.Ipconfig1)
 	d.Set("ipconfig2", config.Ipconfig2)
+	d.Set("ipconfig3", config.Ipconfig3)
+	d.Set("ipconfig4", config.Ipconfig4)
 	// Disks.
 	configDisksSet := d.Get("disk").(*schema.Set)
 	activeDisksSet := UpdateDevicesSet(configDisksSet, config.QemuDisks)
